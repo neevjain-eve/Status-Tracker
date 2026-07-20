@@ -1081,7 +1081,7 @@
   },
   {
     "id": "TSK-2073",
-    "name": "PF arrears of ~\u20b948,000",
+    "name": "PF arrears of ~₹48,000",
     "manager": "Srikrishna",
     "department": "ResponseTek",
     "priority": "Medium",
@@ -1193,7 +1193,7 @@
     "status": "Pending",
     "dueDate": "",
     "progress": 0,
-    "lastUpdated": "2026-07-16T00:00:00.000Z",
+    "lastUpdated": "2026-07-17T07:16:25.094Z",
     "description": "The condonation application needs to be filed.",
     "blockers": "",
     "nextAction": "",
