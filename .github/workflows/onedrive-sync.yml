@@ -20,8 +20,8 @@ on:
         required: false
         default: ""
   schedule:
-    # Safety-net pull every 15 minutes in case OneDrive was edited outside the app
-    - cron: "*/15 * * * *"
+    # Safety-net pull every 5 minutes (GitHub's minimum interval for scheduled workflows)
+    - cron: "*/5 * * * *"
 
 # Serialize every run so two edits landing close together can't race each other
 # and clobber one another's writes.
