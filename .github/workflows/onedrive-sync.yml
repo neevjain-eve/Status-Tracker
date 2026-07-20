@@ -47,7 +47,6 @@ jobs:
       - name: Run sync
         env:
           MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
-          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
           MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
           MS_REFRESH_TOKEN: ${{ secrets.MS_REFRESH_TOKEN }}
           OD_DRIVE_ID: ${{ secrets.OD_DRIVE_ID }}

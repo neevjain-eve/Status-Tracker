@@ -6,7 +6,6 @@ import sodium from "libsodium-wrappers";
 
 const {
   MS_CLIENT_ID,
-  MS_CLIENT_SECRET,
   MS_TENANT_ID,
   MS_REFRESH_TOKEN,
   OD_DRIVE_ID,
@@ -27,12 +26,12 @@ function fail(msg) {
 
 async function refreshAccessToken() {
   const url = `https://login.microsoftonline.com/${MS_TENANT_ID}/oauth2/v2.0/token`;
+  // Public client (SPA app registration) - no client secret involved or needed.
   const body = new URLSearchParams({
     client_id: MS_CLIENT_ID,
-    client_secret: MS_CLIENT_SECRET,
     grant_type: "refresh_token",
     refresh_token: MS_REFRESH_TOKEN,
-    scope: "https://graph.microsoft.com/.default offline_access",
+    scope: "Files.ReadWrite offline_access",
   });
   const res = await fetch(url, {
     method: "POST",
@@ -139,7 +138,7 @@ function applyOp(tasks, op, taskId, payloadStr) {
 }
 
 async function main() {
-  if (!MS_CLIENT_ID || !MS_CLIENT_SECRET || !MS_TENANT_ID || !MS_REFRESH_TOKEN) {
+  if (!MS_CLIENT_ID || !MS_TENANT_ID || !MS_REFRESH_TOKEN) {
     fail("Missing Microsoft credential secrets.");
   }
   if (!OD_DRIVE_ID || !OD_ITEM_ID) fail("Missing OneDrive drive/item id secrets.");
