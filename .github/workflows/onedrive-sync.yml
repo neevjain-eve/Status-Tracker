@@ -15,6 +15,10 @@ on:
         description: "Full task object as JSON (upsert only)"
         required: false
         default: ""
+      actor:
+        description: "Who made this change (for the audit trail)"
+        required: false
+        default: ""
   schedule:
     # Safety-net pull every 15 minutes in case OneDrive was edited outside the app
     - cron: "*/15 * * * *"
@@ -57,15 +61,25 @@ jobs:
           OP: ${{ github.event.inputs.op }}
           TASK_ID: ${{ github.event.inputs.taskId }}
           PAYLOAD: ${{ github.event.inputs.payload }}
+          ACTOR: ${{ github.event.inputs.actor }}
         run: node .github/scripts/sync.mjs
 
       - name: Commit data file if changed
+        env:
+          OP: ${{ github.event.inputs.op }}
+          TASK_ID: ${{ github.event.inputs.taskId }}
+          ACTOR: ${{ github.event.inputs.actor }}
         run: |
           if ! git diff --quiet -- data/tasks.json; then
             git config user.name "onedrive-sync-bot"
             git config user.email "actions@users.noreply.github.com"
             git add data/tasks.json
-            git commit -m "Sync tasks from OneDrive [skip ci]"
+            if [ -n "$ACTOR" ] && [ -n "$OP" ]; then
+              MSG="$ACTOR: $OP $TASK_ID [skip ci]"
+            else
+              MSG="Sync tasks from OneDrive [skip ci]"
+            fi
+            git commit -m "$MSG"
             git push
           else
             echo "No changes to commit."
