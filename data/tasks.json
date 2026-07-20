@@ -1948,20 +1948,5 @@
     "blockers": "",
     "nextAction": "",
     "comments": []
-  },
-  {
-    "id": "TSK-TEST-SYNC",
-    "name": "Sync Test - safe to ignore",
-    "manager": "Bindu",
-    "department": "Test Client",
-    "priority": "Low",
-    "status": "Pending",
-    "dueDate": "2026-08-01",
-    "progress": 0,
-    "lastUpdated": "2026-07-20T00:00:00.000Z",
-    "description": "automated sync verification",
-    "blockers": "",
-    "nextAction": "",
-    "comments": []
   }
 ]
