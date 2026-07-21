@@ -1,0 +1,42 @@
+name: Refresh OneDrive Token
+
+on:
+  schedule:
+    # Every 25 minutes -- well inside the ~55-60 min access token lifetime,
+    # with slack for GitHub's scheduling jitter on free-tier cron.
+    - cron: '*/25 * * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: onedrive-token-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pynacl
+
+      - name: Refresh token and relay to od_config.json
+        env:
+          MS_CLIENT_ID: ${{ secrets.MS_CLIENT_ID }}
+          MS_CLIENT_SECRET: ${{ secrets.MS_CLIENT_SECRET }}
+          MS_TENANT_ID: ${{ secrets.MS_TENANT_ID }}
+          MS_REFRESH_TOKEN: ${{ secrets.MS_REFRESH_TOKEN }}
+          GH_SECRETS_PAT: ${{ secrets.GH_SECRETS_PAT }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python3 .github/scripts/refresh_od_token.py
